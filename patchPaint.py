@@ -42,7 +42,7 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
         iterations=10
 
         if verbose:
-            print 'Scale = 2^%d'%logscale
+            print('Scale = 2^%d'%logscale)
         
         for iter in xrange(iterations):
             if verbose:
@@ -107,11 +107,11 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
             if iter>0:
                 diff=np.sum((I.astype('float32')-Iprev)**2)/np.sum(M)
                 if verbose:
-                    print 'diff = %f'%diff
+                    print('diff = %f'%diff)
                 if diff<diffthresh:
                     break
             elif verbose:
-                print
+                print()
         
         if logscale<0:
             Idata=cv2.resize(Iorg,(0,0),fx=scale*2,fy=scale*2)

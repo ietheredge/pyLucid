@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 from lucidDream import dreamData
 
+
 Iorg=cv2.imread('img.jpg')
 Morg=Image.open('gt.png')
 palette=Morg.getpalette()
