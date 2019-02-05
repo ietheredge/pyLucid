@@ -50,6 +50,7 @@ def dreamData(img, gt, bgimg, consequent_frames):
         while np.all(seg_backgr==0) and np.all(new_msk==0):
             print('All objects are missed, so we have to retry random transform.')
             new_img,new_msk=spline_transform_multi(img,mask)
+            print(new_img.shape, new_msk.shape)
         new_img,new_seg=blend_mask_multi(seg_backgr,new_img,back_img,new_msk)
     else:
         new_img,new_seg=blend_mask_multi(seg_backgr,img,back_img,mask)
