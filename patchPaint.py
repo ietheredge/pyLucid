@@ -20,7 +20,7 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
     padwidth = width/2
 
     if Mask.ndim!=2:
-        if Mask.ndim==3 and Mask.shape[2]==1:
+        if Mask.ndim==3:#and Mask.shape[2]==1:
             Mask=Mask[:,:,0]
         else:
             raise Exception('The dimension of Mask is incorrect.')
