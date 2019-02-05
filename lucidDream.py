@@ -2,7 +2,11 @@ import cv2
 import numpy as np 
 
 def dreamData(img, gt, bgimg, consequent_frames):
-    if isinstance(bgimg,basestring):
+    try:
+        basestring
+    except NameError:
+        basestring = str
+    if isinstance(bgimg, basestring):
         back_img=cv2.imread(bgimg)
     else:
         back_img=bgimg.copy()
