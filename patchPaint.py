@@ -37,14 +37,14 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
     Rnd=np.random.randint(256,size=[m,n,chn],dtype='uint8')
     I[M]=Rnd[M]
 
-    for logscale in xrange(startscale,1):
+    for logscale in range(startscale,1):
         scale=2**logscale
         iterations=10
 
         if verbose:
             print('Scale = 2^%d'%logscale)
         
-        for iter in xrange(iterations):
+        for iter in range(iterations):
             if verbose:
                 plt.imshow(cv2.cvtColor(I,cv2.COLOR_Lab2RGB))
                 plt.pause(0.001)
@@ -87,9 +87,9 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
             sim=np.exp(-d/(2*sigma**2),dtype='float64')
 
             R=sim[:,np.newaxis,np.newaxis,np.newaxis]*patchim
-            sumpatch=[np.bincount(groupind.ravel(),weights=R[...,i].ravel()) for i in xrange(chn)]
-            Rlst=[np.zeros([m+width-1,n+width-1],dtype='float64') for _ in xrange(chn)]
-            for i in xrange(chn):
+            sumpatch=[np.bincount(groupind.ravel(),weights=R[...,i].ravel()) for i in range(chn)]
+            Rlst=[np.zeros([m+width-1,n+width-1],dtype='float64') for _ in range(chn)]
+            for i in range(chn):
                 Rlst[i].ravel()[:sumpatch[i].size]=sumpatch[i]
             R=np.dstack(Rlst)
 
