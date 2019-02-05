@@ -1,5 +1,6 @@
 import cv2
-import numpy as np 
+import numpy as np
+
 
 def dreamData(img, gt, bgimg, consequent_frames):
     try:
@@ -7,29 +8,29 @@ def dreamData(img, gt, bgimg, consequent_frames):
     except NameError:
         basestring = str
     if isinstance(bgimg, basestring):
-        back_img=cv2.imread(bgimg)
+        back_img = cv2.imread(bgimg)
     else:
-        back_img=bgimg.copy()
-    if img.ndim==2 or img.shape[2]==1:
-        img=np.dstack((img,)*3)
+        back_img = bgimg.copy()
+    if img.ndim == 2 or img.shape[2] == 1:
+        img = np.dstack((img,)*3)
+    object_ids = np.unique(gt)
+    if object_ids[0] == 0:
+        object_ids = object_ids[1:]
 
-    object_ids=np.unique(gt)
-    if object_ids[0]==0:
-        object_ids=object_ids[1:]
+    number_of_objects = np.random.randint(object_ids[-1])+1
+    mask_object_ids = np.random.choice(object_ids, number_of_objects,
+                                       replace=False)
+    mask_object_ids = np.sort(mask_object_ids)
+    mask = gt.copy()
+    mask[np.isin(mask, mask_object_ids, invert=True)] = 0
 
-    number_of_objects=np.random.randint(object_ids[-1])+1
-    mask_object_ids=np.random.choice(object_ids,number_of_objects,replace=False)
-    mask_object_ids=np.sort(mask_object_ids)
-    mask=gt.copy()
-    mask[np.isin(mask,mask_object_ids,invert=True)]=0
-
-    org_back_img=back_img.copy()
-    seg=gt.copy()
+    org_back_img = back_img.copy()
+    seg = gt.copy()
 
     if np.random.randint(2):
-        kernel=cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(5,5))
-        dilmsk=cv2.dilate(mask,kernel)
-        back_img[dilmsk==0]=img[dilmsk==0]
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+        dilmsk = cv2.dilate(mask, kernel)
+        back_img[dilmsk == 0] = img[dilmsk == 0]
     else:
         seg[mask==0]=0
     
