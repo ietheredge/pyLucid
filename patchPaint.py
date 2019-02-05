@@ -17,7 +17,7 @@ def paint(Iorg, Mask, verbose=True, sigma=0.1):
 
     if width%2==0:
         raise Exception('The width should be an odd integer.')
-    padwidth=width/2
+    padwidth = width/2
 
     if Mask.ndim!=2:
         if Mask.ndim==3 and Mask.shape[2]==1:
