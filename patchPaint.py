@@ -7,35 +7,33 @@ import pycuda.gpuarray as gpuarray
 from pycuda.compiler import SourceModule
 from PatchMatch.PatchMatchCuda import PatchMatch
 
+
 def paint(Iorg, Mask, verbose=True, sigma=0.1):
-    Iorg=cv2.cvtColor(Iorg,cv2.COLOR_BGR2Lab)
+    Iorg = cv2.cvtColor(Iorg, cv2.COLOR_BGR2Lab)
 
-    width=7
-    match_iter=10
-    
-    diffthresh=1
+    width = 7
+    match_iter = 10
+    diffthresh = 1
 
-    if width%2==0:
+    if width % 2 == 0:
         raise Exception('The width should be an odd integer.')
     padwidth = int(width / 2)
 
-    if Mask.ndim!=2:
-        if Mask.ndim==3:#and Mask.shape[2]==1:
-            Mask=Mask[:,:,0]
+    if Mask.ndim != 2:
+        if Mask.ndim == 3:  # and Mask.shape[2]==1:
+            Mask = Mask[:, :, 0]
         else:
             raise Exception('The dimension of Mask is incorrect.')
-    
-    [m,n,chn]=Iorg.shape
-    startscale=int(-np.ceil(np.log2(min(m,n)))+5)
-    scale=2**startscale
-    
-    I=cv2.resize(Iorg,(0,0),fx=scale,fy=scale)
-    M=cv2.resize(Mask,(0,0),fx=scale,fy=scale,interpolation=cv2.INTER_NEAREST)
-    M=M>0
-    
-    [m,n,chn]=I.shape
-    Rnd=np.random.randint(256,size=[m,n,chn],dtype='uint8')
-    I[M]=Rnd[M]
+    [m, n, chn] = Iorg.shape
+    startscale = int(-np.ceil(np.log2(min(m, n)))+5)
+    scale = 2**startscale
+    I = cv2.resize(Iorg, (0, 0), fx=scale, fy=scale)
+    M = cv2.resize(Mask, (0, 0), fx=scale, fy=scale,
+                 interpolation =cv2.INTER_NEAREST)
+    M = M > 0
+    [m, n, chn] = I.shape
+    Rnd = np.random.randint(256, size=[m, n, chn], dtype='uint8')
+    I[M] = Rnd[M]
 
     for logscale in range(startscale,1):
         scale=2**logscale
